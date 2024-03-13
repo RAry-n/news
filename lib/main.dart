@@ -32,8 +32,8 @@ class MyApp extends StatelessWidget {
     bool loggedIn = FirebaseAuth.instance.currentUser!=null;
     return MaterialApp(
 
-     // initialRoute: loggedIn ? '/home' : '/sign_in',
-      initialRoute: '/home',
+     initialRoute: loggedIn ? '/home' : '/sign_in',
+      // initialRoute: '/home',
 
       routes: {
         '/home' : (context) => Home(),

@@ -216,7 +216,7 @@ class _SignUpState extends State<SignUp> {
       );
       Navigator.pop(context);
       displaySnackBar('Sign up successful');
-      Navigator.pushReplacementNamed(context, '/register');
+      Navigator.pushReplacementNamed(context, '/home');
 
 
       // } on FirebaseAuthException catch (e) {

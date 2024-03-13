@@ -45,7 +45,8 @@ dependencies:
   carousel_slider: ^4.2.1
 
   flutter_bloc: ^8.0.1
-  shared_preferences: ^2.0.8
+  shared_preferences: ^2.2.2
+  firebase_database: ^10.4.9
 
 
 dev_dependencies:

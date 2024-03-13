@@ -1,3 +1,6 @@
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_database/firebase_database.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 import '../data_class/top_headlines.dart';
@@ -11,13 +14,61 @@ class DetailsScreen extends StatefulWidget {
 }
 
 class _DetailsScreenState extends State<DetailsScreen> {
+
+  bool isFav = false;
+  Map favIds = {};
+  final ref = FirebaseDatabase.instance.ref("fav");
+  final auth = FirebaseAuth.instance;
+
+  void getData() async {
+    String? userId = auth.currentUser?.uid;
+    final snapshot = await ref.child(userId!).get();
+    if (snapshot.exists) {
+      favIds = snapshot.value as Map;
+    }
+    if(widget.data.source?.id==null){
+      return;
+    }
+    if(favIds[widget.data.source!.id.toString()]!=null){
+      setState(() {
+        isFav = true;
+      });
+
+    }
+
+  }
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    getData();
+  }
+
   @override
   Widget build(BuildContext context) {
+
+
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Colors.white,
         elevation: 0.0,
         iconTheme: IconThemeData(color: Colors.orange.shade900),
+        actions: <Widget>[
+          IconButton(
+            icon: Container(
+              margin: EdgeInsets.only(right: 30),
+              child: Icon(
+                isFav ? CupertinoIcons.heart_fill
+                : CupertinoIcons.heart,
+                color: Colors.red,
+              ),
+            ),
+            onPressed: () {
+              onLikePressed();
+            },
+          )
+        ],
       ),
       body: Padding(
         padding: const EdgeInsets.all(18.0),
@@ -57,10 +108,38 @@ class _DetailsScreenState extends State<DetailsScreen> {
             SizedBox(
               height: 30.0,
             ),
-            Text(widget.data.content.toString())
+            Text(widget.data.content.toString()),
+            ElevatedButton(onPressed: (){
+              String url =widget.data.url.toString();
+            }, child:
+            Text("View Full Article"))
           ],
         ),
       ),
     );
+  }
+
+  void onLikePressed() {
+    String? userId = auth.currentUser?.uid;
+    setState(() {
+      isFav = !isFav;
+    });
+    if(isFav==false){
+      //unlike kro
+      isFav = false;
+      favIds.remove(widget.data.source!.id!);
+      ref.set({
+        userId : favIds
+      });
+    } else {
+      //like kro
+      isFav = true;
+      print(favIds);
+      favIds[widget.data.source!.id!]=true;
+      print(favIds);
+      ref.set({
+        userId : favIds
+      });
+    }
   }
 }
