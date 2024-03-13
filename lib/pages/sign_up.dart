@@ -28,8 +28,13 @@ class _SignUpState extends State<SignUp> {
         title: Container(
           alignment: Alignment.center,
           margin: const EdgeInsets.all(10),
-
-          child: Image.asset('assets/news_icon.png'),
+            child: const Text(
+              'News',
+              style: TextStyle(
+                  color: Colors.white,
+                  fontWeight: FontWeight.w500,
+                  fontSize: 50),
+            )
         ),
         centerTitle: true,
         backgroundColor: Colors.grey[850],

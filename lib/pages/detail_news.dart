@@ -2,6 +2,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 import '../data_class/top_headlines.dart';
 
@@ -109,10 +110,11 @@ class _DetailsScreenState extends State<DetailsScreen> {
               height: 30.0,
             ),
             Text(widget.data.content.toString()),
-            ElevatedButton(onPressed: (){
-              String url =widget.data.url.toString();
-            }, child:
-            Text("View Full Article"))
+            SizedBox(height: 15,),
+            // ElevatedButton(onPressed: (){
+            //   _launch();
+            // }, child:
+            // Text("View Full Article"))
           ],
         ),
       ),
@@ -135,11 +137,20 @@ class _DetailsScreenState extends State<DetailsScreen> {
       //like kro
       isFav = true;
       print(favIds);
-      favIds[widget.data.source!.id!]=true;
+      favIds[widget.data.source!.id!]="true";
       print(favIds);
       ref.set({
         userId : favIds
       });
     }
+  }
+
+  Future<void> _launch() async {
+    String? url =widget.data.url;
+    if(url==null) return;
+    if(await launchUrl(Uri.parse(url))){
+      return;
+    }
+    throw "could not launch!";
   }
 }

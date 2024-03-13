@@ -1,4 +1,4 @@
-import 'dart:ffi';
+// import 'dart:ffi';
 
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:carousel_slider/carousel_slider.dart';
@@ -69,6 +69,19 @@ class _HomeState extends State<Home> {
     return Scaffold(
       appBar: AppBar(
         title: Center(child: Text('Top News', style: TextStyle(fontSize: 24,fontWeight: FontWeight.bold),)),
+        actions: <Widget>[
+          IconButton(
+            icon: Container(
+              margin: EdgeInsets.only(right: 30),
+              child: Icon(
+                Icons.logout
+              ),
+            ),
+            onPressed: () {
+              logout();
+            },
+          )
+        ],
         leading: IconButton(
           onPressed: (){
             // Navigator.push(context, MaterialPageRoute(builder: (context) => CategoriesNews()));
@@ -153,7 +166,7 @@ class _HomeState extends State<Home> {
                               borderRadius: BorderRadius.circular(
                                 16.0,
                               ),
-                              color: Colors.amberAccent.shade100,
+                              color: Colors.black,
                             ),
                             child: Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
@@ -182,9 +195,10 @@ class _HomeState extends State<Home> {
                                           const TextStyle(
                                             overflow: TextOverflow.ellipsis,
                                             fontWeight: FontWeight.w700,
+                                            color: Colors.white,
                                           ),
                                         ),
-                                        maxLines: 2,
+                                        maxLines: 3,
                                       ),
                                       const SizedBox(
                                         height: 8.0,
@@ -201,21 +215,21 @@ class _HomeState extends State<Home> {
                                         ),
                                         maxLines: 1,
                                       ),
-                                      const SizedBox(
-                                        height: 8.0,
-                                      ),
-                                      Row(
-                                        mainAxisAlignment: MainAxisAlignment.end,
-                                        children: [
-                                          IconButton(
-                                            onPressed: () {},
-                                            icon: Icon(
-                                              CupertinoIcons.heart,
-                                            ),
-                                          ),
-
-                                        ],
-                                      ),
+                                      // const SizedBox(
+                                      //   height: 8.0,
+                                      // ),
+                                      // Row(
+                                      //   mainAxisAlignment: MainAxisAlignment.end,
+                                      //   children: [
+                                      //     IconButton(
+                                      //       onPressed: () {},
+                                      //       icon: Icon(
+                                      //         CupertinoIcons.heart,
+                                      //       ),
+                                      //     ),
+                                      //
+                                      //   ],
+                                      // ),
                                     ],
                                   ),
                                 ),
@@ -244,5 +258,22 @@ class _HomeState extends State<Home> {
         ],
       ),
     );
+  }
+
+  void logout() {
+    auth.signOut();
+    displaySnackBar('Logged out successfully!');
+    Navigator.pushReplacementNamed(context, '/sign_in');
+  }
+
+  void displaySnackBar(String s) {
+    var snackdemo = SnackBar(
+      content: Text(s),
+      backgroundColor: Colors.green,
+      elevation: 10,
+      behavior: SnackBarBehavior.floating,
+      margin: EdgeInsets.all(5),
+    );
+    ScaffoldMessenger.of(context).showSnackBar(snackdemo);
   }
 }

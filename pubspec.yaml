@@ -47,6 +47,7 @@ dependencies:
   flutter_bloc: ^8.0.1
   shared_preferences: ^2.2.2
   firebase_database: ^10.4.9
+  url_launcher: ^6.2.5
 
 
 dev_dependencies:
